@@ -53,12 +53,13 @@ class CausalAttention(nn.Module):
         key = self.K(x).view(batch,seq_len,self.n_heads,self.head_dim).transpose(1,2)
         value = self.V(x).view(batch,seq_len,self.n_heads,self.head_dim).transpose(1,2)
         out = self.attention(query,key,value)
-
-        out = out.transpose(1,2).view(batch,seq_len,C)
+        out = out.transpose(1,2).contiguous().view(batch,seq_len,C)
         out = self.proj(out)
         out = self.proj_drop(out)
 
         return out
+
+ 
 
 
 
